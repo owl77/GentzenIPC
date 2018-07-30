@@ -1,1 +1,42 @@
+
+There is an article in preparation about this implementation.
+
 python -i gentzenv2.py
+
+PyGen G3i/G3m IPC Automatic Prover v1.0
+   by Clarence Protin 2018  
+type help() for command list
+>>> help()
+seq = newseq(f) - defines the sequent  [] = > f
+addfor(deq,f) - adds f to antecedent of sequent seq
+proof(seq) - searches for proof
+bproof(seq,b) -  limited depth search
+>>> a = newseq("(((A \/ B) \/ C) -> (A \/ (B \/ C)))")
+(1)  => (((A \/ B) \/ C) -> (A \/ (B \/ C)))   
+>>> proof(a)
+(1)  => (((A \/ B) \/ C) -> (A \/ (B \/ C)))   
+(1) ((A \/ B) \/ C) => (A \/ (B \/ C))    RImp1
+(1) (A \/ B) => (A \/ (B \/ C))   (2) C => (A \/ (B \/ C))    LOr1f1
+(1) C => (A \/ (B \/ C))   (2) A => (A \/ (B \/ C))   (2) B => (A \/ (B \/ C))    LOr1f1
+(1) C => (B \/ C)   (2) A => (A \/ (B \/ C))   (2) B => (A \/ (B \/ C))    ROr1i2
+(1) C => C   (1) A => (A \/ (B \/ C))   (2) B => (A \/ (B \/ C))    ROr1i2
+(1) A => (A \/ (B \/ C))   (2) B => (A \/ (B \/ C))    Ax1
+(1) A => A   (2) B => (A \/ (B \/ C))    ROr1i1
+(1) B => (A \/ (B \/ C))    Ax1
+(1) B => (B \/ C)    ROr1i2
+(1) B => B    ROr1i1
+Q.E.D. Ax1
+>>> a = newseq("((A -> (B -> C)) -> ((A -> B) -> (A -> C)))")
+(1)  => ((A -> (B -> C)) -> ((A -> B) -> (A -> C)))   
+>>> proof(a)
+(1)  => ((A -> (B -> C)) -> ((A -> B) -> (A -> C)))   
+(1) (A -> (B -> C)) => ((A -> B) -> (A -> C))    RImp1
+(1) (A -> (B -> C)), (A -> B) => (A -> C)    RImp1
+(1) (A -> (B -> C)), (A -> B), A => C    RImp1
+(1) (A -> (B -> C)), (A -> B), A => A   (2) (A -> B), A, (B -> C) => C    LImp1f1
+(1) (A -> B), A, (B -> C) => C    Ax1
+(1) (A -> B), A, (B -> C) => A   (2) A, (B -> C), B => C    LImp1f1
+(1) A, (B -> C), B => C    Ax1
+(1) A, (B -> C), B => B   (2) A, B, C => C    LImp1f2
+(1) A, B, C => C    Ax1
+Q.E.D. Ax1
